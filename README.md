@@ -3,7 +3,7 @@
 This repo contains the seed codebase for the MakersBnB project in Python (using 
 Flask and Pytest).
 
-Someone in your team "Use this template" to create a copy of the codebase on their GitHub account.
+Someone in your team should "Use this template" to create a copy of the codebase on their GitHub account.
 Everyone in the team should then clone that copy of the repo to their local machine.
 
 > NOTE: If you encounter a `ModuleNotFound` error, deactivate and then reactivate your virtual env. If that doesn't help, please reach out to your coach.
