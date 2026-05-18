@@ -7,7 +7,7 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY, 
     name TEXT,
     email_address TEXT,
-    password TEXT NOT NULL,
+    password TEXT NOT NULL
 );
 
 CREATE TABLE spaces (
@@ -18,8 +18,11 @@ CREATE TABLE spaces (
     price FLOAT,
     description TEXT,
     availability BOOLEAN,
-    user_id REFERENCES users(id)
+    user_id int,
+    constraint fk_user foreign key(user_id) references users(id) on delete cascade
 );
+
+INSERT INTO users (name, email_address, password) VALUES ('Joe Bloggs', 'joe@bloggs.com', 'Password1234');
 
 INSERT INTO spaces (title, location, tv_show, price, description, availability, user_id)
 VALUES
