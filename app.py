@@ -5,6 +5,7 @@ from lib.database_connection import DatabaseConnection
 from lib.user_repo import UserRepo
 from lib.user import User
 from lib.space_repository import SpaceRepository
+from lib.space import Space
 
 is_test_mode = (os.getenv('APP_ENV') == 'test')
 connection = DatabaseConnection(is_test_mode)
@@ -25,6 +26,11 @@ def get_index():
 def get_signup_form():
     return render_template("signup_form.html")
 
+#GET /spaces/new -> form for list_space_form
+@app.route("/spaces/new", methods=["GET"])
+def get_list_space_form():
+    return render_template("list_space_form.html")
+
 # POST /users -> create new user
 @app.route("/users", methods=["POST"])
 def create_user():
@@ -37,6 +43,24 @@ def create_user():
     )
     user_repo.create(new_user)
     return redirect("/index")
+
+# POST /spaces -> create new space
+@app.route("/spaces", methods=["POST"])
+def create_space():
+    space_repository = SpaceRepository(connection)
+    space_details = request.form
+    new_space = Space(
+        id=None,
+        title=space_details["title"],
+        location=space_details["location"],
+        tv_show=space_details["tv_show"],
+        price=space_details["price"],
+        description=space_details["description"],
+        availability=space_details["availability"],
+        user_id=space_details["user_id"]
+    )
+    space_repository.create(new_space)
+    return redirect("/spaces")
 
 #GET /spaces -> get all spaces
 @app.route("/spaces", methods=["GET"])
