@@ -5,7 +5,6 @@ class UserRepo:
         self.connection = connection
 
 
-
     def create(self, user):
         self.connection.execute(
             "INSERT INTO users (name, email_address, password) VALUES (%s, %s, %s)",
@@ -26,8 +25,8 @@ class UserRepo:
         
         user_details = rows[0]
         return User(
+            user_details["id"],
             user_details["name"],
             user_details["email_address"],
-            user_details["password"],
-            user_details["id"]
+            user_details["password"]
         )
