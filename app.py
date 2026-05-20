@@ -68,8 +68,6 @@ def create_space():
     space_repository.create(new_space)
     return redirect("/spaces")
 
-#GET /spaces -> get all spaces
-
 # GET /sessions/new -> login
 @app.route("/sessions/new", methods=["GET"])
 def get_login_form():
@@ -80,15 +78,9 @@ def get_login_form():
 @app.route("/sessions", methods=["POST"])
 def create_session():
     user_repository = UserRepo(connection)
-
     email_address = request.form["email_address"]
     password = request.form["password"]
-
     user = user_repository.find(email_address)
-
-    print("USER>>>", user)
-    print("PASSWORD MATCH>>>", user.password == password)
-
     if user and user.password == password:
         session["user_id"] = user.id
         session["email_address"] = user.email_address
