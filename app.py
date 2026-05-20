@@ -96,6 +96,13 @@ def gel_all_spaces():
     spaces = spaces_repo.all()
     return render_template("spaces.html", spaces=spaces)
 
+#GET /spaces/space_id -> get a single space
+@app.route("/spaces/<int:space_id>",methods=["GET"])
+def get_single_space(space_id):
+    spaces_repo = SpaceRepository(connection)
+    space = spaces_repo.find_by_id(space_id)
+    return render_template("single_space.html",space=space)
+
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
