@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS spaces;
-DROP TABLE IF EXISTS users;
-DROP SEQUENCE IF EXISTS users_id_seq;
-DROP SEQUENCE IF EXISTS spaces_id_seq;
+DROP TABLE IF EXISTS bookings CASCADE;
+DROP TABLE IF EXISTS spaces CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY, 
@@ -17,14 +17,29 @@ CREATE TABLE spaces (
     tv_show TEXT,
     price FLOAT,
     description TEXT,
-    availability BOOLEAN,
+    available_from DATE,
+    available_to DATE,
     user_id int,
     constraint fk_user foreign key(user_id) references users(id) on delete cascade
 );
 
+CREATE TABLE bookings (
+    id SERIAL PRIMARY KEY, 
+    space_id int,
+    constraint fk_space foreign key(space_id) references spaces(id) on delete cascade,
+    user_id int,
+    constraint fk_user foreign key(user_id) references users(id) on delete cascade,
+    date DATE,
+    status text
+);
+
 INSERT INTO users (name, email_address, password) VALUES ('Joe Bloggs', 'joe@bloggs.com', 'Password1234');
 
-INSERT INTO spaces (title, location, tv_show, price, description, availability, user_id)
+INSERT INTO spaces (title, location, tv_show, price, description, available_from, available_to, user_id)
 VALUES
-('Beach House', 'Brighton', 'The Crown', 120.00, 'A lovely place', TRUE, 1),
-('City Flat', 'London', 'Sherlock', 85.00, 'Central location', FALSE, 1);
+('Beach House', 'Brighton', 'The Crown', 120.00, 'A lovely place', '2026-01-01', '2026-12-31', 1),
+('City Flat', 'London', 'Sherlock', 85.00, 'Central location', '2026-01-01', '2026-12-31', 1);
+
+INSERT INTO bookings (space_id, user_id, date, status) VALUES (1, 1, '2026-05-20', 'pending');
+
+
