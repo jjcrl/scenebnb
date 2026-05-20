@@ -61,7 +61,8 @@ def create_space():
         tv_show=space_details["tv_show"],
         price=space_details["price"],
         description=space_details["description"],
-        availability=space_details["availability"],
+        available_from=space_details["available_from"],
+        available_to=space_details["available_to"],
         user_id=space_details["user_id"]
     )
     space_repository.create(new_space)
