@@ -13,7 +13,7 @@ def test_create_user_adds_to_table():
     connection.execute("TRUNCATE TABLE users CASCADE;")
 
     response = client.post(
-        "/users", data={"name": "testuser", "email_address": "test@email.com", "password": "password123"}
+        "/users", data={"id": 2,"name": "testuser", "email_address": "test@email.com", "password": "password123"}
     )
 
     assert response.status_code == 302

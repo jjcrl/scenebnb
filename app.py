@@ -42,6 +42,7 @@ def create_user():
     user_repo = UserRepo(connection)
     user_details = request.form
     new_user = User(
+        id = None,
         name=user_details["name"],
         email_address=user_details["email_address"],
         password=user_details["password"],
