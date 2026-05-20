@@ -11,3 +11,20 @@ class BookingRepository:
             item = Booking(row["id"], row["space_id"], row["user_id"], row["date"], row["status"])
             booking.append(item)
         return booking
+    
+    def confirm(self, booking_id):
+        rows = self._connection.execute(
+            "UPDATE bookings SET status = 'confirmed' WHERE id = %s RETURNING *", [booking_id])
+        row = rows[0]
+        return Booking(row["id"], row["space_id"], row["user_id"], row["date"], row["status"])
+    
+    def deny(self, booking_id):
+        rows = self._connection.execute(
+            "UPDATE bookings SET status = 'denied' WHERE id = %s RETURNING *", [booking_id])
+        row = rows[0]
+        return Booking(row["id"], row["space_id"], row["user_id"], row["date"], row["status"])
+    
+    def check_avail(self,space_id,date):
+        rows = self._connection.execute("SELECT * FROM  bookings WHERE space_id = %s AND date = %s AND status = 'pending';",[space_id,date])
+        print("ROWS>>>>>>",rows)
+        return len(rows) > 0

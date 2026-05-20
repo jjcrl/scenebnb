@@ -68,8 +68,6 @@ def create_space():
     space_repository.create(new_space)
     return redirect("/spaces")
 
-#GET /spaces -> get all spaces
-
 # GET /sessions/new -> login
 @app.route("/sessions/new", methods=["GET"])
 def get_login_form():
@@ -80,15 +78,9 @@ def get_login_form():
 @app.route("/sessions", methods=["POST"])
 def create_session():
     user_repository = UserRepo(connection)
-
     email_address = request.form["email_address"]
     password = request.form["password"]
-
     user = user_repository.find(email_address)
-
-    print("USER>>>", user)
-    print("PASSWORD MATCH>>>", user.password == password)
-
     if user and user.password == password:
         session["user_id"] = user.id
         session["email_address"] = user.email_address
@@ -103,6 +95,13 @@ def gel_all_spaces():
     spaces_repo = SpaceRepository(connection)
     spaces = spaces_repo.all()
     return render_template("spaces.html", spaces=spaces)
+
+#GET /spaces/space_id -> get a single space
+@app.route("/spaces/<int:space_id>",methods=["GET"])
+def get_single_space(space_id):
+    spaces_repo = SpaceRepository(connection)
+    space = spaces_repo.find_by_id(space_id)
+    return render_template("single_space.html",space=space)
 
 
 # These lines start the server if you run this file directly
