@@ -1,4 +1,6 @@
 from playwright.sync_api import Page, expect
+from app import app
+from lib.booking_repository import BookingRepository
 
 # Tests for your routes go here
 
@@ -28,3 +30,27 @@ def test_create_new_space(page,test_web_address):
     page.fill("input[name='user_id']", "1")
     page.click("button[type='submit']")
     expect(page).to_have_url(f"http://{test_web_address}/spaces")
+
+"""
+test a booking is confirmed
+"""
+def test_confirm_booking(db_connection):
+    db_connection.seed("seeds/setup_seeds.sql")
+    client = app.test_client()
+    response = client.post("/bookings/1/confirm")
+    assert response.status_code == 302
+    booking_repository = BookingRepository(db_connection)
+    booking = booking_repository.find_by_user_id(1)
+    assert booking.status == "confirmed"
+
+"""
+test a booking is denied
+"""
+def test_deny_booking(db_connection):
+    db_connection.seed("seeds/setup_seeds.sql")
+    client = app.test_client()
+    response = client.post("/bookings/1/deny")
+    assert response.status_code == 302
+    booking_repository = BookingRepository(db_connection)
+    booking = booking_repository.find_by_user_id(1)
+    assert booking.status == "denied"

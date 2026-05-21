@@ -7,6 +7,7 @@ from lib.user import User
 from lib.space_repository import SpaceRepository
 from lib.space import Space
 from lib.login_required import login_required
+from lib.booking_repository import *
 
 is_test_mode = os.getenv("APP_ENV") == "test"
 connection = DatabaseConnection(is_test_mode)
@@ -98,12 +99,25 @@ def gel_all_spaces():
     return render_template("spaces.html", spaces=spaces)
 
 #GET /spaces/space_id -> get a single space
-@app.route("/spaces/<int:space_id>",methods=["GET"])
+@app.route("/spaces/<int:space_id>", methods=["GET"])
 def get_single_space(space_id):
     spaces_repo = SpaceRepository(connection)
     space = spaces_repo.find_by_id(space_id)
     return render_template("single_space.html",space=space)
 
+#POST /bookings/booking_id -> confirm a single booking
+@app.route("/bookings/<int:booking_id>/confirm", methods=["POST"])
+def confirm_booking(booking_id):
+    booking_repo = BookingRepository(connection)
+    booking = booking_repo.confirm(booking_id)
+    return redirect("/bookings")
+
+#POST /bookings/booking_id -> deny a single booking
+@app.route("/bookings/<int:booking_id>/deny", methods=["POST"])
+def deny_booking(booking_id):
+    booking_repo = BookingRepository(connection)
+    booking = booking_repo.deny(booking_id)
+    return redirect("/bookings")
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
