@@ -4,39 +4,28 @@ from app import app
 from lib.database_connection import DatabaseConnection
 from lib.user_repo import UserRepo
 
-def test_create_user_adds_to_table():
+def test_create_user_adds_to_table(db_connection):
+    db_connection.seed("seeds/setup_seeds.sql")
     client = app.test_client()
-
-    connection = DatabaseConnection(test_mode=True)
-    connection.connect()
-
-    connection.execute("TRUNCATE TABLE users CASCADE;")
-
     response = client.post(
-        "/users", data={"id": 2,"name": "testuser", "email_address": "test@email.com", "password": "password123"}
+        "/users", data={"name": "testuser", "email_address": "test@email.com", "password": "password123"}
     )
 
     assert response.status_code == 302
 
-    result = connection.execute("SELECT name FROM users;")
-
+    result = db_connection.execute("SELECT * FROM users WHERE email_address = 'test@email.com';")
     assert len(result) == 1
     assert result[0]["name"] == "testuser"
 
-def test_find_email_gets_user():
+def test_find_email_gets_user(db_connection):
+    db_connection.seed("seeds/setup_seeds.sql")
 
     client = app.test_client()
 
-    connection = DatabaseConnection(test_mode=True)
-    connection.connect()
+    user_repo = UserRepo(db_connection)
 
-    connection.execute("TRUNCATE TABLE users CASCADE;")
+    user = user_repo.find("joe@bloggs.com")
 
-    connection.execute("INSERT INTO users (name, email_address, password) VALUES ('test_user', 'test@email.com', 'password123');")
-    user_repo = UserRepo(connection)
-
-    user = user_repo.find("test@email.com")
-
-    assert user.name == 'test_user'
-    assert user.email_address == 'test@email.com'
-    assert user.password == 'password123'
+    assert user.name == 'Joe Bloggs'
+    assert user.email_address == 'joe@bloggs.com'
+    assert user.password == 'Password1234'
