@@ -1,4 +1,4 @@
-from lib.booking import *
+from lib.booking import Booking
 from datetime import date
 
 class BookingRepository:
@@ -15,6 +15,7 @@ class BookingRepository:
             booking.append(item)
         return booking
 
+# user_id = guests user_id
     def create(self, booking):
         self._connection.execute(
             "INSERT INTO bookings (space_id, user_id, date, status) VALUES (%s, %s, %s, %s)",
@@ -48,3 +49,11 @@ class BookingRepository:
         rows = self._connection.execute("SELECT * FROM  bookings WHERE space_id = %s AND date = %s AND status = 'pending';",[space_id,date])
         print("ROWS>>>>>>",rows)
         return len(rows) > 0
+    
+    def get_confirmed_dates(self, space_id):
+        rows = self._connection.execute("SELECT date FROM  bookings WHERE space_id = %s AND status = 'confirmed';",[space_id])
+        dates = []
+        for row in rows:
+            item = row["date"]
+            dates.append(item)
+        return dates

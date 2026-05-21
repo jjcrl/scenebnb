@@ -57,3 +57,11 @@ def test_is_not_available(db_connection):
     booking_repo.confirm(1)
     is_avail = booking_repo.check_avail(1, date(2026,5,20))
     assert is_avail == False
+
+
+def test_get_confrimed_dates(db_connection):
+    db_connection.seed("seeds/setup_seeds.sql")
+    booking_repo = BookingRepository(db_connection)
+    booking_repo.confirm(1)
+    dates = booking_repo.get_confirmed_dates(1)
+    assert dates == [date(2026,5,20)]

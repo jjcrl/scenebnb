@@ -15,7 +15,7 @@ def test_get_index(page, test_web_address):
     p_tag = page.locator("p")
 
     # We assert that it has the text "This is the homepage."
-    expect(p_tag).to_have_text("This is the homepage.")
+    expect(p_tag).to_have_text("Your homepage.")
 
 
 def test_create_new_space(page,test_web_address):
