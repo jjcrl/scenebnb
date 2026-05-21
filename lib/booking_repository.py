@@ -24,10 +24,18 @@ class BookingRepository:
         return None
 
     def find_by_space_id(self, space_id):
-        rows = self._connection.execute("SELECT * FROM bookings WHERE space_id = %s", [space_id])
+        rows = self._connection.execute("""
+            SELECT bookings.*, users.name AS requester_name, spaces.title AS space_title
+            FROM bookings
+            JOIN users ON bookings.user_id = users.id
+            JOIN spaces ON bookings.space_id = spaces.id
+            WHERE bookings.space_id = %s
+        """, [space_id])
         bookings = []
         for row in rows:
             booking = Booking(row["id"], row["space_id"], row["user_id"], row["date"], row["status"])
+            booking.requester_name = row["requester_name"]
+            booking.space_title = row["space_title"]
             bookings.append(booking)
         return bookings
     

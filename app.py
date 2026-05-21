@@ -38,8 +38,10 @@ def get_index():
     bookings = booking_repo.find_by_user_id(session['user_id'])
     space_repo = SpaceRepository(connection)
     your_spaces = space_repo.find_by_user_id(session['user_id'])
-    requests = []
-    return render_template("index.html", bookings=bookings)
+    print(your_spaces)
+    for space in your_spaces:
+        space.bookings = booking_repo.find_by_space_id(space.id)
+    return render_template("index.html", bookings=bookings, your_spaces=your_spaces)
 
 # GET /users/new -> form for signup
 @app.route("/users/new", methods=["GET"])
