@@ -33,7 +33,12 @@ CREATE TABLE bookings (
     status text
 );
 
-INSERT INTO users (name, email_address, password) VALUES ('Joe Bloggs', 'joe@bloggs.com', 'Password1234');
+INSERT INTO users (name, email_address, password) VALUES ('Joe Bloggs', 'joe@bloggs.com', 'Password1234'),
+('Ola Fagbenro', 'ola@fagbenro.com', 'Ola1234'),
+('Zoe Jackson', 'zoe@jackson.com', 'Zoe1234'),
+('Zein Raf', 'zein@rafi.com', 'Zein1234'),
+('Joe Caroll', 'joe@caroll.com', 'Joe1234')
+;
 
 INSERT INTO spaces (title, location, tv_show, price, description, available_from, available_to, user_id)
 VALUES
