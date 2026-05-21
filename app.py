@@ -24,6 +24,9 @@ app.secret_key = "some_really_secret_key"
 def get_index():
     booking_repo = BookingRepository(connection)
     bookings = booking_repo.find_by_user_id(session['user_id'])
+    # space_repo = SpaceRepository(connection)
+    # your_spaces = space_repo.find_by_user_id(session['user_id'])
+    # requests = []
     print(bookings)
     return render_template("index.html", bookings=bookings)
 
@@ -118,7 +121,9 @@ def gel_all_spaces():
 def get_single_space(space_id):
     spaces_repo = SpaceRepository(connection)
     space = spaces_repo.find_by_id(space_id)
-    return render_template("single_space.html",space=space)
+    booking_repo = BookingRepository(connection)
+    dates = [str(d) for d in booking_repo.get_confirmed_dates(space_id)]
+    return render_template("single_space.html",space=space, dates=dates)
 
 #POST /bookings/booking_id -> confirm a single booking
 @app.route("/bookings/<int:booking_id>/confirm", methods=["POST"])
