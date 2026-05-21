@@ -7,7 +7,8 @@ from lib.user import User
 from lib.space_repository import SpaceRepository
 from lib.space import Space
 from lib.login_required import login_required
-from lib.booking_repository import *
+from lib.booking_repository import BookingRepository
+from lib.booking import Booking
 
 is_test_mode = os.getenv("APP_ENV") == "test"
 connection = DatabaseConnection(is_test_mode)
@@ -15,17 +16,16 @@ connection.connect()
 
 # Create a new Flask app
 app = Flask(__name__)
-
 app.secret_key = "some_really_secret_key"
-
-# == Your Routes Here ==
 
 
 # GET /index -> homepage
 @app.route("/index", methods=["GET"])
 def get_index():
-    return render_template("index.html")
-
+    booking_repo = BookingRepository(connection)
+    bookings = booking_repo.find_by_user_id(session['user_id'])
+    print(bookings)
+    return render_template("index.html", bookings=bookings)
 
 # GET /users/new -> form for signup
 @app.route("/users/new", methods=["GET"])
@@ -70,11 +70,27 @@ def create_space():
     space_repository.create(new_space)
     return redirect("/spaces")
 
+#POST /bookings -> create a new booking
+@app.route("/bookings",methods=['POST'])
+def create_booking():
+    booking_repo = BookingRepository(connection)
+    booking_details = request.form
+    new_booking = Booking(
+        id=None,
+        space_id=booking_details['space_id'],
+        user_id=booking_details['user_id'],
+        date=booking_details['date'],
+        status='pending'
+    )
+    booking_repo.create(new_booking)
+    return redirect('/index')
+
+
+
 # GET /sessions/new -> login
 @app.route("/sessions/new", methods=["GET"])
 def get_login_form():
     return render_template("login.html")
-
 
 # POST /sessions -> login
 @app.route("/sessions", methods=["POST"])
@@ -89,7 +105,6 @@ def create_session():
         return redirect("/spaces")
     else:
         return redirect("/users/new")
-
 
 # GET /spaces -> get all spaces
 @app.route("/spaces", methods=["GET"])

@@ -54,3 +54,11 @@ def test_deny_booking(db_connection):
     booking_repository = BookingRepository(db_connection)
     booking = booking_repository.find_by_user_id(1)
     assert booking.status == "denied"
+
+def test_create_new_booking(page,test_web_address):
+    page.goto(f"http://{test_web_address}/spaces/1")
+    page.fill("input[name='date']", "2026-05-22")
+    page.fill("input[name='space_id']", "1")
+    page.fill("input[name='user_id']", "1")
+    page.click("button[type='submit']")
+    expect(page).to_have_url(f"http://{test_web_address}/index")
