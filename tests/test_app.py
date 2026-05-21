@@ -28,3 +28,12 @@ def test_create_new_space(page,test_web_address):
     page.fill("input[name='user_id']", "1")
     page.click("button[type='submit']")
     expect(page).to_have_url(f"http://{test_web_address}/spaces")
+
+
+def test_create_new_booking(page,test_web_address):
+    page.goto(f"http://{test_web_address}/spaces/1")
+    page.fill("input[name='date']", "2026-05-22")
+    page.fill("input[name='space_id']", "1")
+    page.fill("input[name='user_id']", "1")
+    page.click("button[type='submit']")
+    expect(page).to_have_url(f"http://{test_web_address}/index")
