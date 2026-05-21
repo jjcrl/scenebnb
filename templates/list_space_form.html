@@ -15,7 +15,7 @@
         <input type="text" name="tv_show" placeholder="tv_show" required><br />
         <input type="text" name="available_from" placeholder="available_from" required><br />
         <input type="text" name="available_to" placeholder="available_to" required><br />
-        <input type="text" name="user_id" placeholder="user_id" required><br />
+        <input type="hidden" name="user_id" value="{{ session['user_id']}}" /><br />
         <button type="submit">List Your Space</button>
       </form>
 </body>
