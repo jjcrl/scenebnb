@@ -19,12 +19,23 @@ app = Flask(__name__)
 app.secret_key = "some_really_secret_key"
 
 
-# GET /index -> homepage
+# # GET /index -> homepage
+# @app.route("/index", methods=["GET"])
+# def get_index():
+#     booking_repo = BookingRepository(connection)
+#     bookings = booking_repo.find_by_user_id(session['user_id'])
+#     print(bookings)
+#     return render_template("index.html", bookings=bookings)
+
+# old code above commented out. We had to add this code - it crashes if user not logged in.
+# playwright test are still failing.. in test/test_app_pw.py
 @app.route("/index", methods=["GET"])
 def get_index():
     booking_repo = BookingRepository(connection)
-    bookings = booking_repo.find_by_user_id(session['user_id'])
-    print(bookings)
+    user_id = session.get("user_id")
+    if user_id is None:
+        return redirect("/sessions/new")
+    bookings = booking_repo.find_by_user_id(user_id)
     return render_template("index.html", bookings=bookings)
 
 # GET /users/new -> form for signup
@@ -125,14 +136,14 @@ def get_single_space(space_id):
 def confirm_booking(booking_id):
     booking_repo = BookingRepository(connection)
     booking = booking_repo.confirm(booking_id)
-    return redirect("/bookings")
+    return redirect("/index")
 
 #POST /bookings/booking_id -> deny a single booking
 @app.route("/bookings/<int:booking_id>/deny", methods=["POST"])
 def deny_booking(booking_id):
     booking_repo = BookingRepository(connection)
     booking = booking_repo.deny(booking_id)
-    return redirect("/bookings")
+    return redirect("/index")
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database

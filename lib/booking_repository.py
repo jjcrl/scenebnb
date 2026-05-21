@@ -24,13 +24,19 @@ class BookingRepository:
 
     def find_by_space_id(self, space_id):
         rows = self._connection.execute("SELECT * FROM bookings WHERE space_id = %s", [space_id])
-        row = rows[0]
-        return Booking(row["id"], row["space_id"], row["user_id"], row["date"], row["status"])
+        bookings = []
+        for row in rows:
+            booking = Booking(row["id"], row["space_id"], row["user_id"], row["date"], row["status"])
+            bookings.append(booking)
+        return bookings
     
     def find_by_user_id(self, user_id):
         rows = self._connection.execute("SELECT * FROM bookings WHERE user_id = %s", [user_id])
-        row = rows[0]
-        return Booking(row["id"], row["space_id"], row["user_id"], row["date"], row["status"])
+        bookings = []
+        for row in rows:
+            booking = Booking(row["id"], row["space_id"], row["user_id"], row["date"], row["status"])
+            bookings.append(booking)
+        return bookings
     
     def confirm(self, booking_id):
         rows = self._connection.execute(

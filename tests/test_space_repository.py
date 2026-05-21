@@ -23,6 +23,16 @@ def test_get_space_by_id(db_connection):
     assert space == Space(1, 'Beach House', 'Brighton', 'The Crown', 120.00, 'A lovely place', date(2026, 1, 1), date(2026, 12, 31), 1)
 
 """
+list space by user id
+"""
+def test_get_space_by_user_id(db_connection):
+    db_connection.seed("seeds/setup_seeds.sql")
+    space_repository = SpaceRepository(db_connection)
+    space = space_repository.find_by_user_id(1)
+    assert space == Space(1, 'Beach House', 'Brighton', 'The Crown', 120.00, 'A lovely place', date(2026, 1, 1), date(2026, 12, 31), 1)
+
+
+"""
 create a new space
 """
 def test_create_space(db_connection):
