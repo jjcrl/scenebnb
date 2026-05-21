@@ -22,7 +22,10 @@ app.secret_key = "some_really_secret_key"
 # GET /index -> homepage
 @app.route("/index", methods=["GET"])
 def get_index():
-    return render_template("index.html")
+    booking_repo = BookingRepository(connection)
+    bookings = booking_repo.find_by_user_id(session['user_id'])
+    print(bookings)
+    return render_template("index.html", bookings=bookings)
 
 # GET /users/new -> form for signup
 @app.route("/users/new", methods=["GET"])
