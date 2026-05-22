@@ -44,7 +44,9 @@ INSERT INTO users (name, email_address, password) VALUES ('Joe Bloggs', 'joe@blo
 INSERT INTO spaces (title, location, tv_show, price, description, available_from, available_to, image_url, user_id)
 VALUES
 ('Beach House', 'Brighton', 'The Crown', 120.00, 'A lovely place', '2026-01-01', '2026-12-31', 'https://pictures.escapia.com/SURFSC/181095/9175490499.jpg', 1),
-('City Flat', 'London', 'Sherlock', 85.00, 'Central location', '2026-01-01', '2026-12-31', 'https://media.houseandgarden.co.uk/photos/618938787ec4df9dbbfebc7f/master/w_1600%2Cc_limit/8fb319cfcc817fa00eaee66e368db0cb-house-11jan17-Arwel-Wyn-Jones--BBC_b.jpg', 1);
+('City Flat', 'London', 'Sherlock', 85.00, 'Central location', '2026-01-01', '2026-12-31', 'https://media.houseandgarden.co.uk/photos/618938787ec4df9dbbfebc7f/master/w_1600%2Cc_limit/8fb319cfcc817fa00eaee66e368db0cb-house-11jan17-Arwel-Wyn-Jones--BBC_b.jpg', 1),
+('Georgian Townhouse', 'Bath', 'Bridgerton', 175.00, 'An elegant Regency property in the heart of Bath', '2026-01-01', '2026-12-31', 'https://images.squarespace-cdn.com/content/v1/56ddfcd545bf219f54e9cde8/1609792937494-LR9P8M6JVAXE33UVKXMY/Paper-and-Moon-Louise-Dockery-interiors-Netflix-Bridgerton-set-design-Regency-London-English-Rangers-House.jpg', 1),
+('Garrison Tavern', 'Birmingham', 'Peaky Blinders', 180.00, 'Stay in the heart of Small Heath, home of the Shelby family', '2026-01-01', '2026-12-31', 'https://live.staticflickr.com/65535/11075200593_91dbd399a6_b.jpg', 1),
 
 INSERT INTO bookings (space_id, user_id, date, status) VALUES (1, 1, '2026-05-20', 'pending');
 
