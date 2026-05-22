@@ -18,6 +18,10 @@ connection.connect()
 app = Flask(__name__)
 app.secret_key = "some_really_secret_key"
 
+@app.route("/", methods=['GET'])
+def get_homepage_login():
+    return render_template("login.html")
+
 @app.route("/index", methods=["GET"])
 def get_index():
     booking_repo = BookingRepository(connection)
