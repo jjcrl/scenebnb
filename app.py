@@ -90,8 +90,6 @@ def create_booking():
     booking_repo.create(new_booking)
     return redirect('/index')
 
-
-
 # GET /sessions/new -> login
 @app.route("/sessions/new", methods=["GET"])
 def get_login_form():
