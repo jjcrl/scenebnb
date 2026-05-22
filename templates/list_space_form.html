@@ -37,6 +37,10 @@
                         <label class="form-label">Available To</label>
                         <input type="date" class="form-control" name="available_to" required>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label">Image Url</label>
+                        <input type="text" class="form-control" name="image_url" required>
+                    </div>
                     <input type="hidden" name="user_id" value="{{ session['user_id'] }}">
                     <div class="d-grid">
                         <button type="submit" class="btn btn-dark">List Your Space</button>

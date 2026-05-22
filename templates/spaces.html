@@ -11,6 +11,7 @@
     {% for space in spaces %}
     <div class="col">
     <div class="card h-100 shadow-sm">
+        <img src="{{ space.image_url }}" class="card-img-top" alt="{{ space.title }}" style="height: 200px; object-fit: cover;"/> 
         <div class="card-body">
             <h5 class="card-title">{{ space.title }}</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{ space.location }}</h6>

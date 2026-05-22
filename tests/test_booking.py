@@ -1,5 +1,6 @@
 from lib.booking import Booking
 from lib.database_connection import *
+from datetime import date
 
 def test_booking_constructs_with_fields(db_connection):
     db_connection.seed("seeds/setup_seeds.sql")

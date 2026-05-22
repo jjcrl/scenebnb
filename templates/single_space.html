@@ -7,6 +7,7 @@
         <a href="/spaces" class="btn btn-outline-secondary mb-4">← Back to Spaces</a>
 
         <div class="card shadow-sm">
+            <img src="{{ space.image_url }}" class="card-img-top" alt="{{ space.title }}" style="height: 500px; object-fit: cover;"/> 
             <div class="card-body p-4">
                 <h1 class="card-title">{{ space.title }}</h1>
                 <h6 class="card-subtitle mb-3 text-muted">{{ space.location }}</h6>

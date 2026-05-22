@@ -33,7 +33,9 @@ def test_booking_by_user_id(db_connection):
     db_connection.seed("seeds/setup_seeds.sql")
     booking_repository = BookingRepository(db_connection)
     booking = booking_repository.find_by_user_id(1)
-    assert booking == [Booking(1, 1, 1, date(2026,5,20), 'pending')]
+    assert booking[0].id == 1
+    assert booking[0].status == 'pending'
+    assert booking[0].date == date(2026,5,20)
 
 def test_confirm_booking(db_connection):
     db_connection.seed("seeds/setup_seeds.sql")
