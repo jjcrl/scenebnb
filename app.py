@@ -74,6 +74,7 @@ def create_space():
         description=space_details["description"],
         available_from=space_details["available_from"],
         available_to=space_details["available_to"],
+        image_url=space_details["image_url"],
         user_id=space_details["user_id"]
     )
     space_repository.create(new_space)
