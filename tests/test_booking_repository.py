@@ -24,7 +24,10 @@ def test_booking_by_space_id(db_connection):
     db_connection.seed("seeds/setup_seeds.sql")
     booking_repository = BookingRepository(db_connection)
     booking = booking_repository.find_by_space_id(1)
-    assert booking == [Booking(1, 1, 1, date(2026,5,20), 'pending')]
+    expected = Booking(1, 1, 1, date(2026,5,20), 'pending')
+    expected.requester_name = "Joe Bloggs"  
+    expected.space_title = "Beach House"   
+    assert booking == [expected]
 
 def test_booking_by_user_id(db_connection):
     db_connection.seed("seeds/setup_seeds.sql")

@@ -18,17 +18,6 @@ connection.connect()
 app = Flask(__name__)
 app.secret_key = "some_really_secret_key"
 
-
-# # GET /index -> homepage
-# @app.route("/index", methods=["GET"])
-# def get_index():
-#     booking_repo = BookingRepository(connection)
-#     bookings = booking_repo.find_by_user_id(session['user_id'])
-#     print(bookings)
-#     return render_template("index.html", bookings=bookings)
-
-# old code above commented out. We had to add this code - it crashes if user not logged in.
-# playwright test are still failing.. in test/test_app_pw.py
 @app.route("/index", methods=["GET"])
 def get_index():
     booking_repo = BookingRepository(connection)

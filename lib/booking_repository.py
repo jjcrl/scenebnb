@@ -19,7 +19,7 @@ class BookingRepository:
     def create(self, booking):
         self._connection.execute(
             "INSERT INTO bookings (space_id, user_id, date, status) VALUES (%s, %s, %s, %s)",
-            [booking.space_id, booking.user_id, booking.date, booking.status],
+            [booking.space_id, booking.user_id, booking.date, booking.status]
         )
         return None
 
