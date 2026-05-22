@@ -34,5 +34,5 @@ needs to be written before both pytest, and python app.py -- OTHERWISE tests wil
 # Run the app
 (makersbnb-venv); python app.py
 
-# Now visit http://localhost:5001/index in your browser
+# Now visit http://localhost:5001/ in your browser and log in!
 ```
