@@ -1,19 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>SPACES GOES HERE</h1>
-    {% for space in spaces%}
-    <ul>
-        <li>{{space.location}} - {{space.title}}</li>
-        <li>{{space.description}}</li>
-        <li>{{space.tv_show}}</li>
-        <li>Price Per Night £{{space.price}}</li>
-    </ul>
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Available Spaces</h2>
+    <a href="/spaces/new" class="btn btn-dark">+ List Your Space</a>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for space in spaces %}
+    <div class="col">
+    <div class="card h-100 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">{{ space.title }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ space.location }}</h6>
+            <p class="card-text">{{ space.description }}</p>
+            <span class="badge bg-secondary">{{ space.tv_show }}</span>
+        </div>
+        <div class="card-footer d-flex justify-content-between align-items-center">
+            <strong>£{{ space.price }} / night</strong>
+            <a href="/spaces/{{ space.id }}" class="btn btn-sm btn-outline-dark">View</a>
+        </div>
+    </div>
+</div>
     {% endfor %}
-</body>
-</html>
+</div>
+
+{% endblock %}

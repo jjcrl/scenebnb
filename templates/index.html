@@ -1,29 +1,81 @@
-<!doctype html>
-<html>
-  <head>
-    <title>MakersBnB</title>
+{% extends 'base.html' %}
 
-    <!--
-            Head to https://github.com/makersacademy/web-applications-in-python/blob/main/pills/loading_css_or_static_files.md
-            If you're wondering how the CSS file below is being loaded.
-        -->
-    <link rel="stylesheet" href="/static/style.css" />
-  </head>
-  <body>
-    <p>Your homepage.</p>
-    <h1>{{ your_spaces }}</h1>
-    <h1>{{ bookings }}</h1>
-    {% for space in your_spaces %} {% for booking in space.bookings %}
-    <h1>
-      {{ booking.requester_name }} wants to book {{ booking.space_title }} on {{
-      booking.date }} - {{ booking.status }}
-    </h1>
-    <form method="POST" action="/bookings/{{ booking.id }}/confirm">
-        <button type="submit">confirm</button>
-    </form>
-    <form method="POST" action="/bookings/{{ booking.id }}/deny">
-        <button type="submit">deny</button>
-    </form>
-    {% endfor %} {% endfor %}
-  </body>
-</html>
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Welcome, {{ session["name"] }}</h2>
+    <a href="/spaces" class="btn btn-dark">Browse All Spaces</a>
+</div>
+
+<hr>
+
+<h3 class="mb-3">Your Listed Spaces</h3>
+{% for space in your_spaces %}
+    <div class="card mb-2">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-0">{{ space.title }}</h5>
+                <small class="text-muted">{{ space.location }} — £{{ space.price }} / night</small>
+            </div>
+            <a href="/spaces/{{ space.id }}" class="btn btn-outline-dark btn-sm">View</a>
+        </div>
+    </div>
+{% else %}
+    <p class="text-muted">You haven't listed any spaces yet. <a href="/spaces/new">List one now</a></p>
+{% endfor %}
+
+<hr>
+
+<h3 class="mb-3">Booking Requests for Your Spaces</h3>
+{% for space in your_spaces %}
+    {% for booking in space.bookings %}
+    <div class="card mb-3">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-1">{{ booking.space_title }}</h5>
+                <p class="mb-1 text-muted">{{ booking.requester_name }} wants to book on {{ booking.date }}</p>
+                <span class="badge 
+                    {% if booking.status == 'confirmed' %}bg-success
+                    {% elif booking.status == 'denied' %}bg-danger
+                    {% else %}bg-secondary{% endif %}">
+                    {{ booking.status }}
+                </span>
+            </div>
+            <div class="d-flex gap-2">
+                <form method="POST" action="/bookings/{{ booking.id }}/confirm">
+                    <button class="btn btn-success btn-sm">Approve</button>
+                </form>
+                <form method="POST" action="/bookings/{{ booking.id }}/deny">
+                    <button class="btn btn-danger btn-sm">Deny</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p class="text-muted">No booking requests yet.</p>
+{% endfor %}
+
+<hr>
+
+<h3 class="mb-3">Your Booking Requests</h3>
+{% for booking in bookings %}
+    <div class="card mb-2">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-0">{{ booking.space_title }}</h5>
+                <small class="text-muted">{{ booking.date }}</small>
+            </div>
+            <span class="badge 
+                {% if booking.status == 'confirmed' %}bg-success
+                {% elif booking.status == 'denied' %}bg-danger
+                {% else %}bg-secondary{% endif %}">
+                {{ booking.status }}
+            </span>
+        </div>
+    </div>
+{% else %}
+    <p class="text-muted">You haven't made any booking requests yet.</p>
+{% endfor %}
+
+{% endblock %}
