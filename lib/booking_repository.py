@@ -40,10 +40,18 @@ class BookingRepository:
         return bookings
     
     def find_by_user_id(self, user_id):
-        rows = self._connection.execute("SELECT * FROM bookings WHERE user_id = %s", [user_id])
+        rows = self._connection.execute("""
+            SELECT bookings.*, spaces.title AS space_title, spaces.location, spaces.price
+            FROM bookings
+            JOIN spaces ON bookings.space_id = spaces.id
+            WHERE bookings.user_id = %s
+        """, [user_id])
         bookings = []
         for row in rows:
             booking = Booking(row["id"], row["space_id"], row["user_id"], row["date"], row["status"])
+            booking.space_title = row["space_title"]
+            booking.space_location = row["location"]
+            booking.space_price = row["price"]
             bookings.append(booking)
         return bookings
     

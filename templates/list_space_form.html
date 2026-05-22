@@ -1,22 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-       <h1>List A Space</h1>
-      <form class="user-forms" method="POST" action="/spaces">
-        <input type="text" name="title" placeholder="title" required><br />
-        <input type="text" name="location" placeholder="location" required><br />
-        <input type="number" name="price" placeholder="price" required><br />
-        <input type="text" name="description" placeholder="description" required><br />
-        <input type="text" name="tv_show" placeholder="tv_show" required><br />
-        <input type="text" name="available_from" placeholder="available_from" required><br />
-        <input type="text" name="available_to" placeholder="available_to" required><br />
-        <input type="hidden" name="user_id" value="{{ session['user_id']}}" /><br />
-        <button type="submit">List Your Space</button>
-      </form>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="card-title mb-4">List a Space</h2>
+
+                <form method="POST" action="/spaces">
+                    <div class="mb-3">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-control" name="title" placeholder="Name your space" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Location</label>
+                        <input type="text" class="form-control" name="location" placeholder="Where is it?" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Price per night (£)</label>
+                        <input type="number" class="form-control" name="price" placeholder="0.00" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" name="description" rows="3" placeholder="Tell us about your space" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">TV Show / Film</label>
+                        <input type="text" class="form-control" name="tv_show" placeholder="e.g. Peaky Blinders" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Available From</label>
+                        <input type="date" class="form-control" name="available_from" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Available To</label>
+                        <input type="date" class="form-control" name="available_to" required>
+                    </div>
+                    <input type="hidden" name="user_id" value="{{ session['user_id'] }}">
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-dark">List Your Space</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

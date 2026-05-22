@@ -1,41 +1,50 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <title>Document</title>
-  </head>
-  <body>
-    <h1>SINGLE SPACE</h1>
-    <h2>USER ID = {{session['user_id']}}</h2>
-    <h2>SPACE ID = {{space.id}}</h2>
-    <ul>
-      <li>{{space.location}} - {{space.title}}</li>
-      <li>{{space.description}}</li>
-      <li>{{space.tv_show}}</li>
-      <li>Price Per Night £{{space.price}}</li>
-    </ul>
-    <form method="post" action="/bookings">
-      <input type="hidden" name="space_id" value="{{ space.id }}" />
-      <input type="hidden" name="user_id" value="{{ session['user_id']}}" />
-      <input
-        type="text"
-        id="date-picker"
-        name="date"
-        placeholder="Pick a date"
-        required
-      />
-      <button type="submit">Request to Book</button>
-    </form>
+{% extends 'base.html' %}
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
-      flatpickr("#date-picker", {
-          minDate: "{{ space.available_from }}",
-          maxDate: "{{ space.available_to }}",
-          disable: {{ dates | tojson | safe }}
-      })
-    </script>
-  </body>
-</html>
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <a href="/spaces" class="btn btn-outline-secondary mb-4">← Back to Spaces</a>
+
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="card-title">{{ space.title }}</h1>
+                <h6 class="card-subtitle mb-3 text-muted">{{ space.location }}</h6>
+                <span class="badge bg-secondary mb-3">{{ space.tv_show }}</span>
+                <p class="card-text">{{ space.description }}</p>
+
+                <hr>
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4>£{{ space.price }} <small class="text-muted fs-6">per night</small></h4>
+                    <small class="text-muted">Available: {{ space.available_from }} to {{ space.available_to }}</small>
+                </div>
+
+                <h5>Request to Book</h5>
+                <form method="POST" action="/bookings">
+                    <input type="hidden" name="space_id" value="{{ space.id }}">
+                    <input type="hidden" name="user_id" value="{{ session['user_id'] }}">
+                    <div class="mb-3">
+                        <label class="form-label">Pick a night</label>
+                        <input type="text" class="form-control" id="date-picker" name="date" placeholder="Pick a date" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-dark">Request to Book</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+    flatpickr("#date-picker", {
+        minDate: "{{ space.available_from }}",
+        maxDate: "{{ space.available_to }}",
+        disable: {{ dates | tojson | safe }}
+    });
+</script>
+{% endblock %}
+
+{% endblock %}
