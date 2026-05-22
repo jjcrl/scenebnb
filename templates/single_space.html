@@ -41,7 +41,7 @@
 {% block scripts %}
 <script>
     flatpickr("#date-picker", {
-        minDate: "{{ space.available_from }}",
+        minDate: "today",
         maxDate: "{{ space.available_to }}",
         disable: {{ dates | tojson | safe }}
     });
