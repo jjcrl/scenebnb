@@ -105,9 +105,15 @@ def create_session():
     if user and user.password == password:
         session["user_id"] = user.id
         session["email_address"] = user.email_address
+        session["name"] = user.name
         return redirect("/spaces")
     else:
         return redirect("/users/new")
+    
+@app.route("/logout", methods=["GET"])
+def logout_user():
+    session.clear()
+    return redirect("/sessions/new")
 
 # GET /spaces -> get all spaces
 @app.route("/spaces", methods=["GET"])
