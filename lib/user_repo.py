@@ -30,3 +30,7 @@ class UserRepo:
             user_details["email_address"],
             user_details["password"]
         )
+    
+    def find_by_id(self,user_id):
+        row = self.connection.execute("SELECT * FROM users WHERE id = %s",[user_id])
+        return row[0]

@@ -1,51 +1,90 @@
+
 {% extends 'base.html' %}
 
 {% block content %}
 
-<div class="row justify-content-center">
+<a href="/spaces" class="btn btn-dark mb-4">← Back to Spaces</a>
+
+<div class="row g-4">
+    <!-- Left — image + description -->
     <div class="col-md-8">
-        <a href="/spaces" class="btn btn-outline-secondary mb-4">← Back to Spaces</a>
+        {% if space.image_url %}
+        <img src="{{ space.image_url }}" class="w-100 rounded" style="height: 500px; object-fit: cover;">
+        {% else %}
+        <div class="bg-secondary rounded w-100" style="height: 500px;"></div>
+        {% endif %}
 
-        <div class="card shadow-sm">
-            <img src="{{ space.image_url }}" class="card-img-top" alt="{{ space.title }}" style="height: 500px; object-fit: cover;"/> 
-            <div class="card-body p-4">
-                <h1 class="card-title">{{ space.title }}</h1>
-                <h6 class="card-subtitle mb-3 text-muted">{{ space.location }}</h6>
-                <span class="badge bg-secondary mb-3">{{ space.tv_show }}</span>
-                <p class="card-text">{{ space.description }}</p>
+    <!-- Description at the bottom -->
+    <div class="mt-4">
+        <h5 class="fw-bold">About the Space</h5>
+        <p>{{ space.about_space() }}</p>
+        <h5 class="fw-bold mt-3">About the Show</h5>
+        <p>{{ space.about_show() }}</p>
+        </div>
 
-                <hr>
+    </div>
 
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h4>£{{ space.price }} <small class="text-muted fs-6">per night</small></h4>
-                    <small class="text-muted">Available: {{ space.available_from }} to {{ space.available_to }}</small>
+    <!-- Right — details + booking -->
+    <div class="col-md-4 d-flex flex-column gap-3">
+
+        <!-- Info card -->
+        <div class="card shadow-sm p-3">
+            <h3 class="fw-bold">{{ space.title }}</h3>
+            <p class="text-muted mb-1"><em>{{ space.tv_show }}</em></p>
+            <p class="mb-1">📍 {{ space.location }}</p>
+            <hr>
+            <h5 class="fw-bold mt-2">£{{ space.price }} <small class="text-muted fs-6">/ night</small></h5>
+        </div>
+
+        <!-- Booking card -->
+        <div class="card shadow-sm p-3">
+            <h5 class="mb-3">Pick a date</h5>
+            <form method="POST" action="/bookings">
+                <input type="hidden" name="space_id" value="{{ space.id }}">
+                <input type="hidden" name="user_id" value="{{ session['user_id'] }}">
+                <input type="text" class="form-control mb-3" id="date-picker" name="date" placeholder="Select a date" required>
+
+                <div id="price-summary" class="d-none mb-3 p-3 bg-light rounded">
+                    <p class="mb-1">Total Number Of Nights <strong>1 Night</strong></p>
+                    <p class="mb-0">Total Price <strong>£{{ space.price }}</strong></p>
                 </div>
 
-                <h5>Request to Book</h5>
-                <form method="POST" action="/bookings">
-                    <input type="hidden" name="space_id" value="{{ space.id }}">
-                    <input type="hidden" name="user_id" value="{{ session['user_id'] }}">
-                    <div class="mb-3">
-                        <label class="form-label">Pick a night</label>
-                        <input type="text" class="form-control" id="date-picker" name="date" placeholder="Pick a date" required>
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-dark">Request to Book</button>
-                    </div>
-                </form>
-            </div>
+                <div id="booking-summary" class="d-none bg-light rounded p-3 mb-3">
+                    <p class="mb-1"><strong>Space:</strong> {{ space.title }}</p>
+                    <p class="mb-1"><strong>Location:</strong> {{ space.location }}</p>
+                    <p class="mb-1"><strong>Date:</strong> <span id="summary-date">—</span></p>
+                    <p class="mb-0"><strong>Total:</strong> £{{ space.price }}</p>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-dark">Request to Book</button>
+                </div>
+            </form>
         </div>
+
     </div>
 </div>
 
-{% block scripts %}
-<script>
-    flatpickr("#date-picker", {
-        minDate: "today",
-        maxDate: "{{ space.available_to }}",
-        disable: {{ dates | tojson | safe }}
-    });
-</script>
 {% endblock %}
 
+{% block scripts %}
+<script>
+flatpickr("#date-picker", {
+    inline: false,
+    dateFormat: "Y-m-d",
+    altInput: true,
+    altFormat: "d/m/Y",
+    minDate: "{{ space.available_from }}",
+    maxDate: "{{ space.available_to }}",
+    disable: {{ dates | tojson | safe }},
+    onChange: function(selectedDates, dateStr) {
+        if (selectedDates.length > 0) {
+            document.getElementById('summary-date').textContent = selectedDates[0].toLocaleDateString('en-GB');
+            document.getElementById('booking-summary').classList.remove('d-none');
+            document.getElementById('price-summary').classList.remove('d-none');
+        }
+    }
+});
+</script>
 {% endblock %}
+```

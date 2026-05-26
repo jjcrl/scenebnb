@@ -1,3 +1,16 @@
 body {
-    font-size: 18px;
+    font-family: 'GT Pressura', sans-serif;
+
+}
+
+@font-face {
+    font-family: 'GT Pressura';
+    src: url('/static/fonts/GT-Pressura-Regular-Trial.woff2') format('woff2');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'GT Pressura';
+    src: url('/static/fonts/GT-Pressura-Bold-Trial.woff2') format('woff2');
+    font-weight: 700;
 }

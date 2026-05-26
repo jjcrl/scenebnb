@@ -27,7 +27,7 @@ class SpaceRepository():
     
 
     def create(self,space):
-        self._connection.execute("INSERT INTO spaces (title,location,tv_show,price,description,available_from,available_to,image_url,user_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s);",[
+        row = self._connection.execute("INSERT INTO spaces (title,location,tv_show,price,description,available_from,available_to,image_url,user_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)RETURNING * ;",[
             space.title,
             space.location,
             space.tv_show,
@@ -38,4 +38,6 @@ class SpaceRepository():
             space.image_url,
             space.user_id
         ])
-        return None
+
+        return row[0]
+    

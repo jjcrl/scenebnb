@@ -15,4 +15,13 @@ class Space():
         return self.__dict__ == other.__dict__
 
     def __repr__(self):
-        return f"Space({self.id}, {self.title}, {self.location}, {self.tv_show}, {self.price:.2f}, {self.description}, {self.available_from}, {self.available_to}, {self.image_url}, {self.user_id})"
+        return f"Space({self.id}, {self.title}, {self.location}, {self.tv_show}, {self.price}, {self.description}, {self.available_from}, {self.available_to}, {self.image_url}, {self.user_id})"
+    
+    def about_space(self):
+        parts = self.description.split('::')
+        return parts[1] if len(parts) > 1 else self.description
+
+    def about_show(self):
+        parts = self.description.split('::')
+        return parts[3] if len(parts) > 3 else ''
+        

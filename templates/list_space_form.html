@@ -2,32 +2,40 @@
 
 {% block content %}
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card shadow-sm">
-            <div class="card-body p-4">
-                <h2 class="card-title mb-4">List a Space</h2>
+<a href="/spaces" class="btn btn-dark mb-4">← Back to Spaces</a>
 
-                <form method="POST" action="/spaces">
+
+<div class="card shadow-sm p-4">
+    <div class="row g-4">
+
+        <!-- Left — form inputs -->
+        <div class="col-md-5">
+            <div class="card shadow-sm p-4 h-100">
+                <h4 class="fw-bold mb-4"> 📌 List Your Space Today</h4>
+                <form method="POST" action="/spaces" id="list-space-form">
                     <div class="mb-3">
                         <label class="form-label">Title</label>
-                        <input type="text" class="form-control" name="title" placeholder="Name your space" required>
+                        <input type="text" class="form-control" name="title" id="input-title" placeholder="Name your space" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Location</label>
-                        <input type="text" class="form-control" name="location" placeholder="Where is it?" required>
+                        <input type="text" class="form-control" name="location" id="input-location" placeholder="Where is it?" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Price per night (£)</label>
-                        <input type="number" class="form-control" name="price" placeholder="0.00" step="0.01" required>
+                        <input type="number" class="form-control" name="price" id="input-price" placeholder="0.00" step="0.01" required>
+                    </div>
+                   <div class="mb-3">
+                    <label class="form-label">About the Space</label>
+                    <textarea class="form-control" name="about_space" id="input-about-space" rows="3" placeholder="Tell us about the space itself..." required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-control" name="description" rows="3" placeholder="Tell us about your space" required></textarea>
+                    <label class="form-label">About the Show</label>
+                    <textarea class="form-control" name="about_show" id="input-about-show" rows="3" placeholder="Tell us about the TV show or film..." required></textarea>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">TV Show / Film</label>
-                        <input type="text" class="form-control" name="tv_show" placeholder="e.g. Peaky Blinders" required>
+                        <input type="text" class="form-control" name="tv_show" id="input-tv-show" placeholder="e.g. Peaky Blinders" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Available From</label>
@@ -38,17 +46,75 @@
                         <input type="date" class="form-control" name="available_to" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Image Url</label>
-                        <input type="text" class="form-control" name="image_url" required>
+                        <label class="form-label">Image URL</label>
+                        <input type="text" class="form-control" name="image_url" id="input-image" placeholder="https://...">
                     </div>
                     <input type="hidden" name="user_id" value="{{ session['user_id'] }}">
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-dark">List Your Space</button>
-                    </div>
                 </form>
             </div>
+        </div>
+
+        <!-- Right — preview + overview + submit -->
+        <div class="col-md-7 d-flex flex-column gap-3">
+
+            <!-- Image preview -->
+            <div class="card shadow-sm p-3 text-center">
+                <p class="text-muted mb-2 small">Image Preview</p>
+                <img id="image-preview" src="" alt="Preview" class="rounded w-100 d-none" style="object-fit: cover;">                <div id="image-placeholder" class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 200px; display: flex;">
+                <span class="text-muted">Enter an image URL to preview</span>
+            </div>
+            </div>
+
+            <!-- Listing overview -->
+            <div class="card shadow-sm p-4">
+                <p class="mb-1">Headline</p>
+                <h5 class="fw-bold" id="preview-title">Your Space Title</h5>
+                <p class="mb-1">Location 📍 </p>
+                <p class="text-muted mb-1" id="preview-location">Location</p>
+                <p class="mb-1">Tv Show / Film</p>
+                <p class="text-muted mb-1"><em id="preview-tv-show">TV Show / Film</em></p>
+                <p class="mb-1">Description</p>
+                <p class="mb-1" id="preview-description" style="font-size: 0.9rem;">Description will appear here</p>
+                <h5 class="fw-bold mt-2">£<span id="preview-price">0.00</span> <small class="text-muted fw-normal fs-6">/ night</small></h5>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" form="list-space-form" class="btn btn-dark btn-lg">Confirm Listing</button>
+
         </div>
     </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('input-title').addEventListener('input', function() {
+        document.getElementById('preview-title').textContent = this.value || 'Your Space Title';
+    });
+    document.getElementById('input-location').addEventListener('input', function() {
+        document.getElementById('preview-location').textContent = this.value || 'Location';
+    });
+    document.getElementById('input-tv-show').addEventListener('input', function() {
+        document.getElementById('preview-tv-show').textContent = this.value || 'TV Show / Film';
+    });
+    document.getElementById('input-description').addEventListener('input', function() {
+        document.getElementById('preview-description').textContent = this.value || 'Description will appear here';
+    });
+    document.getElementById('input-price').addEventListener('input', function() {
+        document.getElementById('preview-price').textContent = this.value || '0.00';
+    });
+document.getElementById('input-image').addEventListener('input', function() {
+    const preview = document.getElementById('image-preview');
+    const placeholder = document.getElementById('image-placeholder');
+    if (this.value) {
+        preview.src = this.value;
+        preview.classList.remove('d-none');
+        placeholder.classList.add('d-none');
+    } else {
+        preview.classList.add('d-none');
+        placeholder.classList.remove('d-none');
+    }
+});
+</script>
 {% endblock %}
