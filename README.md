@@ -1,38 +1,76 @@
-# MakersBnB Python Project Seed
+# SceneBnB 🎬
 
-NOTE!!!: If running tests, APP=ENV=test
-needs to be written before both pytest, and python app.py -- OTHERWISE tests will fail due to it not using the test database
+A MakersBnB-inspired property rental web app built with Python and Flask.
 
-> NOTE: If you encounter a `ModuleNotFound` error, deactivate and then reactivate your virtual env. If that doesn't help, please reach out to your coach.
+---
+
+## ⚠️ Important Notes
+
+- **Running tests or the app?** You must prefix commands with `APP_ENV=test` when using the test database:
+  ```
+  APP_ENV=test pytest
+  APP_ENV=test python app.py
+  ```
+  Without this, tests will fail as they won't use the test database.
+
+- **`ModuleNotFoundError`?** Deactivate and reactivate your virtual environment. If that doesn't resolve it, reach out to your coach.
+
+---
 
 ## Setup
 
-```shell
-# Set up the virtual environment
-; python -m venv makersbnb-venv
+### 1. Create and activate the virtual environment
 
-# Activate the virtual environment
-; source makersbnb-venv/bin/activate 
-
-# Install dependencies
-(makersbnb-venv); pip install -r requirements.txt
-
-# Install the virtual browser we will use for testing
-(makersbnb-venv); playwright install
-# If you have problems with the above, contact your coach
-
-# Create a test and development database
-(makersbnb-venv); createdb YOUR_PROJECT_NAME
-(makersbnb-venv); createdb YOUR_PROJECT_NAME_TEST
-
-# Open lib/database_connection.py and change the database names
-(makersbnb-venv); open lib/database_connection.py
-
-# Run the tests (with extra logging)
-(makersbnb-venv); pytest -sv
-
-# Run the app
-(makersbnb-venv); python app.py
-
-# Now visit http://localhost:5001/ in your browser and log in!
+```bash
+python -m venv makersbnb-venv
+source makersbnb-venv/bin/activate
 ```
+
+### 2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Install the virtual browser (for testing)
+
+```bash
+playwright install
+```
+
+### 4. Create the databases
+
+```bash
+createdb scenebnb
+createdb scenebnb_test
+```
+
+### 5. Update the database connection config
+
+```bash
+open lib/database_connection.py
+```
+
+Update the database names to match the ones you created above.
+
+### 6. Run the tests
+
+```bash
+APP_ENV=test pytest -sv
+```
+
+### 7. Run the app
+
+```bash
+python app.py
+```
+
+Then visit [http://localhost:5001](http://localhost:5001) in your browser.
+
+---
+
+## Tech Stack
+
+- **Backend**: Python, Flask
+- **Database**: PostgreSQL
+- **Testing**: pytest, Playwright
